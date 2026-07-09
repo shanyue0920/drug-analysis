@@ -1,0 +1,45 @@
+# =====================================================================
+# SkillHub 自动发布工作流
+# 触发: 推送到 main 分支，或手动 workflow_dispatch
+# 效果: 每次 git push 即自动发布 Skill 到 SkillHub（CLI 发布）
+# 必做: 在 GitHub 仓库 Settings → Secrets and variables → Actions
+#       添加 Repository secret：
+#       名称 SKILLHUB_TOKEN，值 = 你的 skh_ 开头 API Token
+# 版本: SkillHub 每次发布要求新版本号，这里自动在 SKILL.md 的
+#       version 基础上追加 +YYYYMMDDHHMM 时间戳，保证唯一、不回写源码。
+# 说明: 本工作流文件由本地用「带 workflow 权限的 GitHub PAT」推送；
+#       运行时发布 SkillHub 用的是上面的 SKILLHUB_TOKEN secret，
+#       二者是不同的 token，请勿混淆。
+# =====================================================================
+name: Publish to SkillHub
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install SkillHub CLI
+        run: curl -fsSL https://skillhub.cn/install/install.sh | bash -s -- --cli-only
+
+      - name: Publish skill
+        env:
+          SKILLHUB_TOKEN: ${{ secrets.SKILLHUB_TOKEN }}
+        run: |
+          export PATH="$HOME/.local/bin:$PATH"
+          BASE_VER=$(grep -m1 '^version:' SKILL.md | sed 's/.*:[[:space:]]*//' | tr -d '"')
+          [ -n "$BASE_VER" ] || BASE_VER="0.0.0"
+          AUTO_VER="${BASE_VER}+$(date +%Y%m%d%H%M)"
+          TMP=$(mktemp -d)
+          cp -R ./. "$TMP"/
+          rm -rf "$TMP/.git" "$TMP/.gitignore" "$TMP/.github"
+          skillhub publish "$TMP" --version "$AUTO_VER" --token "$SKILLHUB_TOKEN" --changelog "CI auto-publish: $(date +%Y-%m-%d)"
