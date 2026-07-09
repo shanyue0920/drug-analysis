@@ -84,6 +84,21 @@ drug-analysis/
 
 ---
 
+## 🔄 自动发布（开发者向）
+
+本仓库内置「改完即发布」能力，维护者无需手动操作：
+
+- **自动发布 + 更新**：`.git/hooks/post-commit` 在每次 `git commit` 后，自动把 Skill 发布/覆盖更新到 SkillHub（skillId=97070）。发布 token 从 **macOS 钥匙串**读取（service=`skillhub` / account=`shanyue0920`），不落明文文件。
+- **自动备份**：发布成功后自动 `git push origin main` 同步到 GitHub。
+- **结果通知**：发布成功/失败通过 **macOS 原生通知**弹出提醒（符合"提醒走 Apple 原生"规范）。
+- **版本唯一性**：每次发布版本号 = `SKILL.md` 的 `version` + `+YYYYMMDDHHMMSS`（精确到秒），避免 SkillHub 版本冲突。
+
+**手动发布兜底**：`bash outputs/publish-skill.sh`（同样从钥匙串读 token，自动升版本）。
+
+> 注意：`.git/hooks/` 是本地 git 元数据，不会被提交/推送；GitHub Actions 另有 workflow，但本账号 runner 受限，自动发布以本地 hook 为准。
+
+---
+
 ## 📄 许可
 
 MIT License © 2026 周山月（WorkBuddy 用户级 Skill）
