@@ -101,7 +101,7 @@ drug-analysis/
 
 ## 📄 许可
 
-MIT License © 2026 周山月（十安）
+MIT License © 2026 周维
 
-- **作者 / 出品**：周山月（十安），本 Skill 为个人维护的用户级 WorkBuddy Skill。
+- **作者 / 出品**：周维，本 Skill 为个人维护的用户级 WorkBuddy Skill。
 - 转载或二次发布请保留作者署名。
