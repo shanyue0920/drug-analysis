@@ -2,10 +2,10 @@
 name: drug-analysis
 slug: drug-analysis
 displayName: 药品综合分析
-version: 1.1.0
+version: 2.0.0
 summary: 给定任一药品或治疗领域，一次性产出融合「临床档案+商业评估」的合并报告；强制数据校准(🔍/💭)、循证三件套(研究/指南/共识)、带量级与杠杆的市场机会、防偷懒留空不编造。
 license: MIT
-author: 周维
+author: zhouwei <WeChat: Shanyue0920>
 description: >
   当用户需要对某个药品（化学药/生物药/中成药）或治疗领域做结构化、多维度分析时使用。
   一次性覆盖临床档案与商业评估，输出一份合并的「综合分析报告」。
@@ -18,6 +18,10 @@ description: >
   「XX药进集采/医保了吗」「XX产品SWOT」「解读XX说明书」「给我写段XX药科普」。
 allowed-tools: WebSearch, WebFetch, Read, Write
 ---
+
+
+> **🔧 自包含声明**：本 skill 已**完全自包含**，可独立运行，无需安装任何其他 skill 或外部共享底座。
+> 内置共享知识存于本 skill 的 `references/`：临床档案框架与校准规则见 `references/foundation.md`；循证三件套见 `references/evidence-levels.md`、`references/drug-classes.md`、`references/market-methodology.md`；专利FTO框架见 `references/foundation.md` §三。
 
 # 药品分析 Skill
 > 作者 / 出品：周维
